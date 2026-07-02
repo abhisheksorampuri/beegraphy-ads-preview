@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Beegraphy Ads — Dashboard</title>
 <style>
   :root{
     --bg:#0f1420; --panel:#161d2e; --panel-2:#1b2438; --line:#26314c;
     --ink:#e8edf7; --muted:#8a97b3; --faint:#5e6c8c;
     --accent:#5b7cfa; --accent-soft:#23304f;
-    --good:#37d39a; --warn:#f5b455; --bad:#f06a6a; --violet:#9a6bff;
-    --r:12px;
+    --good:#37d39a; --warn:#f5b455; --bad:#f06a6a; --violet:#9a6bff; --r:12px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
   .app{display:grid;grid-template-rows:auto 1fr;height:100vh}
-
-  /* ---- top bar (global command box) ---- */
   .topbar{display:flex;align-items:center;gap:16px;padding:12px 18px;background:var(--panel);border-bottom:1px solid var(--line)}
   .brand{display:flex;align-items:center;gap:10px;min-width:200px}
   .brand .mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--violet));display:grid;place-items:center;font-weight:700;color:#fff}
-  .brand b{font-size:15px}
-  .brand small{display:block;color:var(--faint);font-size:11px}
+  .brand b{font-size:15px}.brand small{display:block;color:var(--faint);font-size:11px}
   .cmd{flex:1;display:flex;align-items:center;gap:11px;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px 15px}
-  .cmd:focus-within{border-color:var(--accent)}
-  .cmd .ic{color:var(--accent);font-size:15px}
+  .cmd:focus-within{border-color:var(--accent)}.cmd .ic{color:var(--accent)}
   .cmd input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-size:14px}
   .cmd input::placeholder{color:var(--faint)}
-  .cmd .send{background:var(--accent);color:#fff;border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px}
-  .chip{display:inline-flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 13px;color:var(--muted);font-weight:500;cursor:pointer;white-space:nowrap}
-  .me{display:flex;align-items:center;gap:9px}
+  .chip,select.chip{display:inline-flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 13px;color:var(--ink);font-weight:500;white-space:nowrap;cursor:pointer;font-size:13px}
   .avatar{width:30px;height:30px;border-radius:50%;background:#2b3a5e;display:grid;place-items:center;font-size:12px;color:#cfd9f2}
-
   .body{display:grid;grid-template-columns:218px 1fr;overflow:hidden}
-
-  /* ---- sidebar ---- */
   .sidebar{background:var(--panel);border-right:1px solid var(--line);padding:14px 12px;display:flex;flex-direction:column;overflow-y:auto}
   .nav{display:flex;flex-direction:column;gap:3px}
   .nav button{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:9px;color:var(--muted);background:none;border:none;font:inherit;font-weight:500;cursor:pointer;text-align:left;width:100%}
@@ -46,332 +35,340 @@
   .nav button .badge{margin-left:auto;background:var(--accent);color:#fff;font-size:11px;font-weight:600;border-radius:20px;padding:1px 7px}
   .side-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);padding:16px 11px 6px;font-weight:600}
   .conn{display:flex;align-items:center;gap:9px;padding:7px 11px;color:var(--muted);font-size:13px}
-  .conn .led{width:8px;height:8px;border-radius:50%}
-  .conn .st{margin-left:auto;font-size:11px;color:var(--faint)}
-
-  /* ---- main / panels ---- */
+  .conn .led{width:8px;height:8px;border-radius:50%}.conn .st{margin-left:auto;font-size:11px;color:var(--faint)}
   .main{overflow-y:auto;padding:22px 26px}
-  .panel{display:none;animation:fade .18s ease}
-  .panel.active{display:block}
-  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-  .head{margin-bottom:18px}
-  .head h1{font-size:20px;margin:0 0 3px}
-  .head p{margin:0;color:var(--muted)}
-
+  .panel{display:none}.panel.active{display:block}
+  .head{margin-bottom:18px}.head h1{font-size:20px;margin:0 0 3px}.head p{margin:0;color:var(--muted)}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px}
-  .kpi .k{color:var(--muted);font-size:12.5px}
-  .kpi .v{font-size:23px;font-weight:700;margin-top:6px}
-  .kpi .d{font-size:12px;margin-top:4px;font-weight:600}
-  .up{color:var(--good)}.down{color:var(--bad)}.muted{color:var(--muted)}
-
+  .kpi .k{color:var(--muted);font-size:12.5px}.kpi .v{font-size:23px;font-weight:700;margin-top:6px}
+  .muted{color:var(--muted)}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
-  .card .c-head{display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid var(--line)}
-  .card .c-head h2{font-size:15px;margin:0}
-  .card .c-head .hint{color:var(--faint);font-size:12.5px}
-  .card .c-body{padding:16px 17px}
-
+  .c-head{display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid var(--line)}
+  .c-head h2{font-size:15px;margin:0}.c-head .hint{color:var(--faint);font-size:12.5px}
+  .c-body{padding:16px 17px}
   table{width:100%;border-collapse:collapse}
   th,td{text-align:right;padding:11px 15px;border-bottom:1px solid var(--line);white-space:nowrap}
   th:first-child,td:first-child{text-align:left}
   thead th{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-  tbody tr:last-child td{border-bottom:none}
-  tbody tr:hover{background:var(--panel-2)}
-  .camp{display:flex;align-items:center;gap:10px;font-weight:600}
-  .dot{width:8px;height:8px;border-radius:50%}
+  tbody tr:last-child td{border-bottom:none} tbody tr:hover{background:var(--panel-2)}
+  .camp{display:flex;align-items:center;gap:10px;font-weight:600}.dot{width:8px;height:8px;border-radius:50%}
   .cost-good{color:var(--good);font-weight:700}.cost-mid{color:var(--warn);font-weight:700}.cost-bad{color:var(--bad);font-weight:700}
   .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
   .pill.best{background:rgba(55,211,154,.13);color:var(--good)}
   .na{color:var(--faint);font-style:italic}
-
   .summary{display:flex;gap:12px;background:var(--accent-soft);border:1px solid #2e3c63;border-radius:var(--r);padding:14px 16px;margin-bottom:18px}
-  .summary .ic{font-size:18px}
-  .summary p{margin:0;color:#d4ddf5;font-size:13.5px}
-  .summary b{color:#fff}
-
+  .summary .ic{font-size:18px}.summary p{margin:0;color:#d4ddf5;font-size:13.5px}
   .lenses{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
   .lens{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 13px;color:var(--muted);font-weight:500;cursor:pointer;font-size:13px}
-  .lens.on,.lens:hover{border-color:var(--accent);color:#fff;background:var(--accent-soft)}
-
+  .lens.on{border-color:var(--accent);color:#fff;background:var(--accent-soft)}
+  .bars{display:flex;flex-direction:column;gap:11px}
+  .barrow{display:grid;grid-template-columns:150px 1fr 120px;align-items:center;gap:10px;font-size:13px}
+  .track{height:9px;background:var(--panel-2);border-radius:6px;overflow:hidden}.fill{height:100%}.delta{text-align:right;font-size:12px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   /* tasks */
   .board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .col h3{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);margin:0 0 11px;display:flex;align-items:center;gap:8px}
+  .col h3{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);margin:0 0 11px;display:flex;gap:8px}
   .col h3 .ct{background:var(--panel-2);border-radius:20px;padding:1px 8px;font-size:10px}
   .task{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:11px}
   .task .row1{display:flex;align-items:center;gap:8px;margin-bottom:7px}
   .tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px}
-  .tag.sys{background:var(--accent-soft);color:#9db4ff}
-  .tag.ppl{background:rgba(154,107,255,.16);color:#c0a3ff}
+  .tag.sys{background:var(--accent-soft);color:#9db4ff}.tag.ppl{background:rgba(154,107,255,.16);color:#c0a3ff}
   .task .ttl{font-weight:600;font-size:13.5px}
   .task .why{color:var(--faint);font-size:12px;border-left:2px solid var(--line);padding-left:9px;margin:8px 0}
   .who{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;margin-top:8px}
   .who .av{width:20px;height:20px;border-radius:50%;background:#2b3a5e;display:grid;place-items:center;font-size:10px;color:#cfd9f2}
   .acts{display:flex;gap:8px;margin-top:11px}
   .acts button{flex:1;border:none;border-radius:8px;padding:8px;font-weight:600;cursor:pointer;font-size:12.5px}
-  .approve{background:rgba(55,211,154,.15);color:var(--good)}
-  .reject{background:rgba(240,106,106,.12);color:var(--bad)}
-  .ghost{background:var(--panel-2);color:var(--muted)}
-  .done{opacity:.7}
-  .check{color:var(--good)}
-
-  /* reviews */
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .bars{display:flex;flex-direction:column;gap:11px}
-  .barrow{display:grid;grid-template-columns:90px 1fr 92px;align-items:center;gap:10px;font-size:13px}
-  .track{height:9px;background:var(--panel-2);border-radius:6px;overflow:hidden;display:flex}
-  .fill{height:100%}
-  .delta{font-size:12px;font-weight:600;text-align:right}
-  .legend{display:flex;gap:14px;color:var(--muted);font-size:12px;margin-top:6px}
-  .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
-  .cmp{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted)}
-  .cmp .big{font-size:22px;font-weight:700;color:var(--good)}
-
-  /* utm */
-  .form{display:grid;gap:12px;max-width:560px}
+  .approve{background:rgba(55,211,154,.15);color:var(--good)}.reject{background:rgba(240,106,106,.12);color:var(--bad)}
+  .ghost{background:var(--panel-2);color:var(--muted)}.check{color:var(--good)}
+  /* forms / utm */
+  .form{display:grid;gap:12px;max-width:600px}
   .fld label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
   .fld input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--ink);font:inherit}
+  .fld input:focus{outline:none;border-color:var(--accent)}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .out{background:#0c1322;border:1px solid var(--line);border-radius:9px;padding:12px 14px;color:#8fe3c3;font-family:Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all;margin-top:6px}
+  .out{background:#0c1322;border:1px solid var(--line);border-radius:9px;padding:12px 14px;color:#8fe3c3;font-family:Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all;margin-top:6px;min-height:44px}
   .toggle{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;cursor:pointer}
-
-  /* settings */
-  .setrow{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
-  .setrow:last-child{border:none}
-  .btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 15px;font-weight:600;cursor:pointer}
+  .btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 15px;font-weight:600;cursor:pointer;font-size:13px}
   .btn.outline{background:none;border:1px solid var(--line);color:var(--muted)}
-  .ok{color:var(--good);font-weight:600;font-size:13px}
-  .warnt{color:var(--warn);font-weight:600;font-size:13px}
-
-  .mockbadge{position:fixed;bottom:10px;right:14px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-size:11px;padding:4px 11px;border-radius:20px}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .lib{margin-top:8px}
+  .lib .item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:8px;background:var(--panel)}
+  .lib .item code{flex:1;font-size:12px;color:#a9c7ff;word-break:break-all}
+  .lib .item .mini{background:var(--panel-2);border:none;color:var(--muted);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:12px}
+  .warnmsg{color:var(--warn);font-size:12px;margin-top:4px;min-height:16px}
+  .setrow{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
+  .setrow:last-child{border:none}.ok{color:var(--good);font-weight:600;font-size:13px}
+  .modebadge{position:fixed;bottom:10px;right:14px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-size:11px;padding:4px 11px;border-radius:20px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--good);color:#04231a;font-weight:600;padding:9px 16px;border-radius:20px;opacity:0;transition:opacity .2s;pointer-events:none;font-size:13px}
+  .toast.show{opacity:1}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- ===== TOP BAR ===== -->
   <div class="topbar">
-    <div class="brand">
-      <div class="mark">B</div>
-      <div><b>Beegraphy Ads</b><small>smart marketing workflow</small></div>
-    </div>
-    <div class="cmd">
-      <span class="ic">⌘</span>
-      <input placeholder="Ask, or tell me what to do…  e.g. “which campaign brought the most signups?” or “track when someone subscribes”">
-      <button class="send">▸</button>
-    </div>
-    <span class="chip">📅 Last 30 days ▾</span>
-    <div class="me"><div class="avatar">A</div></div>
+    <div class="brand"><div class="mark">B</div><div><b>Beegraphy Ads</b><small>marketing analysis</small></div></div>
+    <div class="cmd"><span class="ic">⌘</span><input placeholder="Ask a question…  (natural-language answers coming soon)" /></div>
+    <select class="chip" id="range"><option value="7d">Last 7 days</option><option value="30d" selected>Last 30 days</option><option value="90d">Last 90 days</option></select>
+    <div class="avatar">A</div>
   </div>
-
   <div class="body">
-    <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar">
       <nav class="nav" id="nav">
         <button class="active" data-tab="dashboard"><span class="ic">◎</span> Dashboard</button>
         <button data-tab="analyze"><span class="ic">▤</span> Analyze</button>
-        <button data-tab="tasks"><span class="ic">✓</span> Tasks <span class="badge">2</span></button>
+        <button data-tab="tasks"><span class="ic">✓</span> Tasks <span class="badge" id="taskcount">3</span></button>
         <button data-tab="reviews"><span class="ic">↻</span> Reviews</button>
         <button data-tab="utm"><span class="ic">🔗</span> UTM Builder</button>
         <button data-tab="settings"><span class="ic">⚙</span> Settings</button>
       </nav>
       <div class="side-label">Connections</div>
-      <div class="conn"><span class="led" style="background:var(--good)"></span> GA4 <span class="st">linked</span></div>
-      <div class="conn"><span class="led" style="background:var(--good)"></span> Meta Ads <span class="st">linked</span></div>
+      <div class="conn"><span class="led" style="background:var(--good)"></span> GA4 <span class="st">demo</span></div>
+      <div class="conn"><span class="led" style="background:var(--good)"></span> Meta Ads <span class="st">demo</span></div>
       <div class="conn"><span class="led" style="background:var(--warn)"></span> GTM <span class="st">not set</span></div>
     </aside>
-
-    <!-- ===== MAIN ===== -->
     <main class="main">
-
-      <!-- DASHBOARD -->
-      <section class="panel active" id="dashboard">
-        <div class="head"><h1>Dashboard</h1><p>Where your ad money went — and what it brought back.</p></div>
-        <div class="summary"><span class="ic">💡</span><p><b>EU – Architects</b> is your cheapest source of new users (€29 each). <b>Global – Parametric</b> is the most expensive (€62). Two campaigns can’t be scored yet — tracking isn’t set up.</p></div>
-        <div class="kpis">
-          <div class="kpi"><div class="k">Total spent</div><div class="v">€4,210</div><div class="d up">▲ 12%</div></div>
-          <div class="kpi"><div class="k">Signups from ads</div><div class="v">218</div><div class="d up">▲ 21%</div></div>
-          <div class="kpi"><div class="k">Avg cost per signup</div><div class="v">€38</div><div class="d up">▼ 9% better</div></div>
-          <div class="kpi"><div class="k">Tasks waiting</div><div class="v">2</div><div class="d muted">in Tasks tab</div></div>
-        </div>
-        <div class="card">
-          <div class="c-head"><h2>The spend funnel — by campaign</h2><span class="hint">money → results → cost each</span></div>
-          <table>
-            <thead><tr><th>Campaign</th><th>Spent</th><th>Times shown</th><th>Clicks</th><th>Signups</th><th>First models</th><th>Cost / signup</th></tr></thead>
-            <tbody>
-              <tr><td><span class="camp"><span class="dot" style="background:var(--good)"></span>EU – Architects</span></td><td>€1,180</td><td>96k</td><td>3,420</td><td>74</td><td>41</td><td><span class="cost-good">€29</span> <span class="pill best">BEST</span></td></tr>
-              <tr><td><span class="camp"><span class="dot" style="background:var(--accent)"></span>Retargeting – Visited</span></td><td>€640</td><td>22k</td><td>1,910</td><td>58</td><td>33</td><td><span class="cost-good">€19</span></td></tr>
-              <tr><td><span class="camp"><span class="dot" style="background:var(--violet)"></span>Global – Parametric</span></td><td>€1,360</td><td>210k</td><td>4,050</td><td>52</td><td>22</td><td><span class="cost-bad">€62</span></td></tr>
-              <tr><td><span class="camp"><span class="dot" style="background:var(--warn)"></span>Students – Broad</span></td><td>€1,030</td><td>180k</td><td>5,210</td><td>34</td><td class="na">— not tracked</td><td class="na">unknown</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ANALYZE -->
-      <section class="panel" id="analyze">
-        <div class="head"><h1>Analyze</h1><p>Ask anything — it pulls fresh data right now and builds a full report.</p></div>
-        <div class="lenses">
-          <span class="lens on">Auto</span><span class="lens">Campaigns</span><span class="lens">Where people drop off</span><span class="lens">Wasted spend</span><span class="lens">Best audiences</span><span class="lens">Tracking gaps</span>
-        </div>
-        <div class="card">
-          <div class="c-head"><h2>Where people drop off</h2><span class="hint">fresh · last 30 days · GA4 ↔ Meta</span></div>
-          <div class="c-body">
-            <div class="bars">
-              <div class="barrow"><span>Visited</span><div class="track"><div class="fill" style="width:100%;background:var(--accent)"></div></div><span class="delta">6,240</span></div>
-              <div class="barrow"><span>Signed up</span><div class="track"><div class="fill" style="width:35%;background:var(--accent)"></div></div><span class="delta">218 · 3.5%</span></div>
-              <div class="barrow"><span>First model</span><div class="track"><div class="fill" style="width:21%;background:var(--good)"></div></div><span class="delta">96 · 44%</span></div>
-              <div class="barrow"><span>Subscribed</span><div class="track"><div class="fill" style="width:9%;background:var(--violet)"></div></div><span class="delta">31 · 32%</span></div>
-            </div>
-            <div class="summary" style="margin:16px 0 0"><span class="ic">⚠️</span><p>Biggest leak: <b>signed up → first model</b> (more than half never make one). Want me to add a task to track what blocks them? <button class="lens on" style="margin-left:6px">+ Create task</button></p></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TASKS -->
-      <section class="panel" id="tasks">
-        <div class="head"><h1>Tasks</h1><p>Findings become tasks — some the system does (you approve), some go to your team.</p></div>
-        <div class="board">
-          <div class="col">
-            <h3>To-do <span class="ct">3</span></h3>
-            <div class="task">
-              <div class="row1"><span class="tag sys">SYSTEM</span><span class="ttl">Add event <code>first_model_created</code></span></div>
-              <div class="why">Why: 2 campaigns can’t be scored without it.</div>
-              <div class="who"><span class="led" style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></span> System does it on approve</div>
-              <div class="acts"><button class="approve">✓ Approve</button><button class="reject">✕ Reject</button></div>
-            </div>
-            <div class="task">
-              <div class="row1"><span class="tag ppl">PERSON</span><span class="ttl">Add GTM tag on “Save model”</span></div>
-              <div class="why">Why: needed before the event can fire on site.</div>
-              <div class="who"><span class="av">D</span> Assigned to Dmitri (dev)</div>
-              <div class="acts"><button class="ghost">Reassign</button><button class="approve">Mark done</button></div>
-            </div>
-            <div class="task">
-              <div class="row1"><span class="tag ppl">PERSON</span><span class="ttl">Raise EU – Architects budget</span></div>
-              <div class="why">Why: it’s your cheapest signups — advisory only.</div>
-              <div class="who"><span class="av">A</span> Assigned to Abhishek</div>
-              <div class="acts"><button class="ghost">Reassign</button><button class="approve">Mark done</button></div>
-            </div>
-          </div>
-          <div class="col">
-            <h3>Doing <span class="ct">1</span></h3>
-            <div class="task">
-              <div class="row1"><span class="tag ppl">PERSON</span><span class="ttl">Write new ad copy for Students</span></div>
-              <div class="why">Why: lots of clicks, few signups.</div>
-              <div class="who"><span class="av">M</span> Maria · in progress</div>
-            </div>
-          </div>
-          <div class="col">
-            <h3>Done <span class="ct">2</span></h3>
-            <div class="task done">
-              <div class="row1"><span class="tag sys">SYSTEM</span><span class="ttl">Created event <code>signup_completed</code> <span class="check">✓</span></span></div>
-              <div class="who">Jun 27 · approved by Abhishek</div>
-            </div>
-            <div class="task done">
-              <div class="row1"><span class="tag ppl">PERSON</span><span class="ttl">Synced audience to Meta <span class="check">✓</span></span></div>
-              <div class="who">Jun 24 · done by Dmitri</div>
-            </div>
-          </div>
-        </div>
-        <p class="muted" style="font-size:12.5px;margin-top:14px">The <b>Done</b> column is also your receipt log — every change, who did it, when.</p>
-      </section>
-
-      <!-- REVIEWS -->
-      <section class="panel" id="reviews">
-        <div class="head"><h1>Reviews</h1><p>How your results — and who you reach — change over time.</p></div>
-        <div class="grid2">
-          <div class="card">
-            <div class="c-head"><h2>Who’s signing up</h2><span class="hint">now vs 6 months ago</span></div>
-            <div class="c-body">
-              <div class="bars">
-                <div class="barrow"><span>Architects</span><div class="track"><div class="fill" style="width:45%;background:var(--good)"></div></div><span class="delta up">45% ▲12</span></div>
-                <div class="barrow"><span>Students</span><div class="track"><div class="fill" style="width:30%;background:var(--violet)"></div></div><span class="delta down">30% ▼15</span></div>
-                <div class="barrow"><span>Hobbyists</span><div class="track"><div class="fill" style="width:25%;background:var(--accent)"></div></div><span class="delta up">25% ▲3</span></div>
-              </div>
-              <p class="muted" style="font-size:12.5px;margin:12px 0 0">Architects are now your fastest-growing group — worth leaning into.</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="c-head"><h2>Where they’re from</h2><span class="hint">now vs 6 months ago</span></div>
-            <div class="c-body">
-              <div class="bars">
-                <div class="barrow"><span>Europe</span><div class="track"><div class="fill" style="width:52%;background:var(--good)"></div></div><span class="delta up">52% ▲9</span></div>
-                <div class="barrow"><span>N. America</span><div class="track"><div class="fill" style="width:28%;background:var(--accent)"></div></div><span class="delta down">28% ▼6</span></div>
-                <div class="barrow"><span>Asia</span><div class="track"><div class="fill" style="width:20%;background:var(--violet)"></div></div><span class="delta down">20% ▼3</span></div>
-              </div>
-              <p class="muted" style="font-size:12.5px;margin:12px 0 0">Europe is pulling ahead — matches your best campaign.</p>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="c-head"><h2>Did it work?</h2><span class="hint">before / after a change</span></div>
-          <div class="c-body">
-            <div class="cmp"><span class="big">−€5</span><div>Since the team shipped <b style="color:var(--ink)">signup_completed</b> tracking on Jun 27, average <b style="color:var(--ink)">cost per signup dropped from €43 → €38</b> over the next 30 days.</div></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- UTM -->
-      <section class="panel" id="utm">
-        <div class="head"><h1>UTM Builder</h1><p>Make consistent tagged links — this is what connects a Meta ad to a GA4 visit.</p></div>
-        <div class="card"><div class="c-body">
-          <div class="form">
-            <div class="fld"><label>Website URL</label><input value="https://beegraphy.com/"></div>
-            <div class="two">
-              <div class="fld"><label>Source</label><input value="facebook"></div>
-              <div class="fld"><label>Medium</label><input value="paid_social"></div>
-            </div>
-            <div class="two">
-              <div class="fld"><label>Campaign</label><input value="{{campaign.name}}"></div>
-              <div class="fld"><label>Campaign ID</label><input value="{{campaign.id}}"></div>
-            </div>
-            <label class="toggle"><input type="checkbox" checked> Use Meta auto-fill tags ({{campaign.name}}, {{campaign.id}}, {{ad.id}})</label>
-            <div>
-              <label style="font-size:12px;color:var(--muted)">Generated link</label>
-              <div class="out">https://beegraphy.com/?utm_source=facebook&utm_medium=paid_social&utm_campaign={{campaign.name}}&utm_id={{campaign.id}}&utm_content={{ad.id}}</div>
-            </div>
-            <div style="display:flex;gap:10px"><button class="btn">Copy link</button><button class="btn outline">Save to library</button></div>
-          </div>
-        </div></div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section class="panel" id="settings">
-        <div class="head"><h1>Settings</h1><p>Connect your accounts and manage who can help.</p></div>
-        <div class="card">
-          <div class="c-head"><h2>Connections</h2></div>
-          <div class="c-body">
-            <div class="setrow"><div><b>Google Analytics (GA4)</b><div class="muted" style="font-size:12.5px">Reads what people do on your site</div></div><span class="ok">● Connected</span></div>
-            <div class="setrow"><div><b>Meta Ads</b><div class="muted" style="font-size:12.5px">Reads spend & reach</div></div><span class="ok">● Connected</span></div>
-            <div class="setrow"><div><b>Google Tag Manager</b><div class="muted" style="font-size:12.5px">Needed to add new tracking on site</div></div><button class="btn">Connect</button></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="c-head"><h2>Team members</h2><span class="hint">so tasks can be assigned</span></div>
-          <div class="c-body">
-            <div class="setrow"><div class="who"><span class="av">A</span> Abhishek · <span class="muted">Approver</span></div><span class="muted">you</span></div>
-            <div class="setrow"><div class="who"><span class="av">D</span> Dmitri · <span class="muted">Developer</span></div><button class="btn outline">Manage</button></div>
-            <div class="setrow"><div class="who"><span class="av">M</span> Maria · <span class="muted">Marketing</span></div><button class="btn outline">Manage</button></div>
-            <div class="setrow"><div></div><button class="btn">+ Invite teammate</button></div>
-          </div>
-        </div>
-        <div class="card"><div class="c-head"><h2>Default date range</h2></div><div class="c-body"><span class="chip">📅 Last 30 days ▾</span></div></div>
-      </section>
-
+      <section class="panel active" id="tab-dashboard"></section>
+      <section class="panel" id="tab-analyze"></section>
+      <section class="panel" id="tab-tasks"></section>
+      <section class="panel" id="tab-reviews"></section>
+      <section class="panel" id="tab-utm"></section>
+      <section class="panel" id="tab-settings"></section>
     </main>
   </div>
 </div>
-<div class="mockbadge">mockup · sample data · click the tabs</div>
+<div class="modebadge">demo data · UTM Builder is fully functional</div>
+<div class="toast" id="toast"></div>
 
 <script>
-  const nav = document.getElementById('nav');
-  const panels = document.querySelectorAll('.panel');
-  nav.addEventListener('click', e => {
-    const btn = e.target.closest('button[data-tab]');
-    if(!btn) return;
-    nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
-    panels.forEach(p => p.classList.toggle('active', p.id === btn.dataset.tab));
-    document.querySelector('.main').scrollTop = 0;
+// ---------- demo data ----------
+const BASE = [
+  { name:"EU – Architects",       color:"#37d39a", spend:1180, impressions:96000,  clicks:3420, signups:74, firstModels:41 },
+  { name:"Retargeting – Visited", color:"#5b7cfa", spend:640,  impressions:22000,  clicks:1910, signups:58, firstModels:33 },
+  { name:"Global – Parametric",   color:"#9a6bff", spend:1360, impressions:210000, clicks:4050, signups:52, firstModels:22 },
+  { name:"Students – Broad",      color:"#f5b455", spend:1030, impressions:180000, clicks:5210, signups:null, firstModels:null },
+];
+const MULT = { "7d":0.25, "30d":1, "90d":2.9 };
+const RANGE_LABEL = { "7d":"Last 7 days", "30d":"Last 30 days", "90d":"Last 90 days" };
+const state = { range:"30d", lens:"campaigns" };
+
+const eur = n => n==null ? "—" : "€"+Math.round(n).toLocaleString();
+const num = n => n==null ? "—" : Math.round(n).toLocaleString();
+function scaled(range){
+  const m = MULT[range];
+  return BASE.map(c => {
+    const spend=Math.round(c.spend*m), signups=c.signups==null?null:Math.max(1,Math.round(c.signups*m));
+    return { ...c, spend, impressions:Math.round(c.impressions*m), clicks:Math.round(c.clicks*m),
+      signups, firstModels:c.firstModels==null?null:Math.round(c.firstModels*m),
+      cps: signups? Math.round(spend/signups):null };
   });
+}
+function costClass(c){ if(c==null)return "na"; if(c<=18)return "cost-good"; if(c<=30)return "cost-mid"; return "cost-bad"; }
+
+// ---------- renderers ----------
+function renderDashboard(){
+  const rows = scaled(state.range);
+  const spend = rows.reduce((s,c)=>s+c.spend,0);
+  const signups = rows.reduce((s,c)=>s+(c.signups||0),0);
+  const avg = signups? Math.round(spend/signups):null;
+  const scored = rows.filter(c=>c.cps!=null);
+  const best = scored.reduce((a,b)=>a.cps<=b.cps?a:b);
+  const dear = scored.reduce((a,b)=>a.cps>=b.cps?a:b);
+  const untracked = rows.filter(c=>c.signups==null).length;
+  const summary = `${best.name} is your cheapest source of signups (${eur(best.cps)} each). ${dear.name} is the most expensive (${eur(dear.cps)}).` + (untracked?` ${untracked} campaign can't be scored yet — tracking isn't set up.`:"");
+  document.getElementById("tab-dashboard").innerHTML = `
+    <div class="head"><h1>Dashboard</h1><p>Where your ad money went — and what it brought back. (${RANGE_LABEL[state.range]})</p></div>
+    <div class="summary"><span class="ic">💡</span><p>${summary}</p></div>
+    <div class="kpis">
+      <div class="kpi"><div class="k">Total spent</div><div class="v">${eur(spend)}</div></div>
+      <div class="kpi"><div class="k">Signups from ads</div><div class="v">${num(signups)}</div></div>
+      <div class="kpi"><div class="k">Avg cost per signup</div><div class="v">${eur(avg)}</div></div>
+      <div class="kpi"><div class="k">Campaigns</div><div class="v">${rows.length}</div></div>
+    </div>
+    <div class="card"><div class="c-head"><h2>The spend funnel — by campaign</h2><span class="hint">money → results → cost each</span></div>
+      <table><thead><tr><th>Campaign</th><th>Spent</th><th>Times shown</th><th>Clicks</th><th>Signups</th><th>First models</th><th>Cost / signup</th></tr></thead>
+      <tbody>${rows.map(c=>`<tr>
+        <td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td>
+        <td>${eur(c.spend)}</td><td>${num(c.impressions)}</td><td>${num(c.clicks)}</td>
+        <td>${c.signups==null?'<span class="na">— not tracked</span>':num(c.signups)}</td>
+        <td>${c.firstModels==null?'<span class="na">—</span>':num(c.firstModels)}</td>
+        <td>${c.cps==null?'<span class="na">unknown</span>':`<span class="${costClass(c.cps)}">${eur(c.cps)}</span>${c.name===best.name?' <span class="pill best">BEST</span>':''}`}</td>
+      </tr>`).join("")}</tbody></table>
+    </div>`;
+}
+
+function renderAnalyze(){
+  const rows = scaled(state.range);
+  const LENSES=[["campaigns","Campaigns"],["funnel","Where people drop off"],["wasted","Wasted spend"]];
+  let body="";
+  if(state.lens==="campaigns"){
+    body = `<div class="card"><div class="c-head"><h2>By campaign</h2><span class="hint">spend → results → cost each</span></div>
+      <table><thead><tr><th>Campaign</th><th>Spent</th><th>Clicks</th><th>Signups</th><th>Cost / signup</th></tr></thead>
+      <tbody>${rows.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td>
+      <td>${eur(c.spend)}</td><td>${num(c.clicks)}</td><td>${c.signups==null?'<span class="na">—</span>':num(c.signups)}</td>
+      <td>${c.cps==null?'<span class="na">unknown</span>':eur(c.cps)}</td></tr>`).join("")}</tbody></table></div>`;
+  } else if(state.lens==="funnel"){
+    const clicks=rows.reduce((s,c)=>s+c.clicks,0), signups=rows.reduce((s,c)=>s+(c.signups||0),0), fm=rows.reduce((s,c)=>s+(c.firstModels||0),0);
+    const steps=[["Clicks",clicks,"var(--accent)"],["Signups",signups,"var(--good)"],["First models",fm,"var(--violet)"]];
+    body = `<div class="card"><div class="c-head"><h2>Where people drop off</h2><span class="hint">clicks → signups → first models</span></div><div class="c-body"><div class="bars">
+      ${steps.map((s,i)=>`<div class="barrow"><span>${s[0]}</span><div class="track"><div class="fill" style="width:${Math.max(s[1]/clicks*100,2)}%;background:${s[2]}"></div></div>
+      <span class="delta">${num(s[1])}${i>0&&steps[i-1][1]?` · ${Math.round(s[1]/steps[i-1][1]*100)}%`:""}</span></div>`).join("")}
+      </div></div></div>`;
+  } else {
+    const w=rows.filter(c=>c.signups==null||c.signups===0); const tot=w.reduce((s,c)=>s+c.spend,0);
+    body = `<div class="card"><div class="c-head"><h2>Wasted / unscored spend</h2><span class="hint">clicks bought, no measured signups</span></div><div class="c-body">
+      <div class="summary" style="margin-bottom:14px"><span class="ic">⚠️</span><p><b>${eur(tot)}</b> went to campaigns with no tracked signups. Add tracking (via Claude + the MCP) to score them.</p></div>
+      ${w.length? `<table><thead><tr><th>Campaign</th><th>Spent</th><th>Clicks</th></tr></thead><tbody>${w.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${eur(c.spend)}</td><td>${num(c.clicks)}</td></tr>`).join("")}</tbody></table>` : '<p class="muted">Every campaign has tracked signups. 🎉</p>'}
+      </div></div>`;
+  }
+  document.getElementById("tab-analyze").innerHTML = `
+    <div class="head"><h1>Analyze</h1><p>Fresh reports seen through different lenses. (${RANGE_LABEL[state.range]})</p></div>
+    <div class="lenses">${LENSES.map(l=>`<span class="lens${state.lens===l[0]?' on':''}" data-lens="${l[0]}">${l[1]}</span>`).join("")}</div>
+    ${body}`;
+}
+
+function renderReviews(){
+  const demo=[["Architects",45,"+12","var(--good)"],["Students",30,"−15","var(--violet)"],["Hobbyists",25,"+3","var(--accent)"]];
+  const geo=[["Europe",52,"+9","var(--good)"],["N. America",28,"−6","var(--accent)"],["Asia",20,"−3","var(--violet)"]];
+  const bars=(arr)=>arr.map(d=>`<div class="barrow"><span>${d[0]}</span><div class="track"><div class="fill" style="width:${d[1]}%;background:${d[3]}"></div></div><span class="delta">${d[1]}% ${d[2]}</span></div>`).join("");
+  document.getElementById("tab-reviews").innerHTML = `
+    <div class="head"><h1>Reviews</h1><p>How your results — and who you reach — change over time.</p></div>
+    <div class="grid2">
+      <div class="card"><div class="c-head"><h2>Who's signing up</h2><span class="hint">now vs 6 months ago</span></div><div class="c-body"><div class="bars">${bars(demo)}</div><p class="muted" style="margin:12px 0 0;font-size:12.5px">Architects are your fastest-growing group.</p></div></div>
+      <div class="card"><div class="c-head"><h2>Where they're from</h2><span class="hint">now vs 6 months ago</span></div><div class="c-body"><div class="bars">${bars(geo)}</div><p class="muted" style="margin:12px 0 0;font-size:12.5px">Europe is pulling ahead.</p></div></div>
+    </div>
+    <div class="card"><div class="c-head"><h2>Did it work?</h2><span class="hint">before / after a change</span></div><div class="c-body"><div style="display:flex;gap:14px;align-items:center"><span style="font-size:22px;font-weight:700;color:var(--good)">−€5</span><div class="muted">Since <b style="color:var(--ink)">signup_completed</b> tracking shipped, average <b style="color:var(--ink)">cost per signup dropped €43 → €38</b>.</div></div></div></div>`;
+}
+
+// ---------- tasks (interactive) ----------
+let TASKS = [
+  {id:1,kind:"sys",title:"Add event <code>first_model_created</code>",why:"2 campaigns can't be scored without it.",who:"System does it on approve",state:"todo"},
+  {id:2,kind:"ppl",title:"Add GTM tag on “Save model”",why:"Needed before the event can fire on site.",who:"Assigned to Dmitri (dev)",state:"todo"},
+  {id:3,kind:"ppl",title:"Raise EU – Architects budget",why:"Cheapest signups — advisory only.",who:"Assigned to Abhishek",state:"todo"},
+  {id:4,kind:"ppl",title:"Write new ad copy for Students",why:"Lots of clicks, few signups.",who:"Maria · in progress",state:"doing"},
+  {id:5,kind:"sys",title:'Created event <code>signup_completed</code>',why:"",who:"Jun 27 · approved by Abhishek",state:"done"},
+];
+function taskCard(t){
+  const tag = t.kind==="sys"?'<span class="tag sys">SYSTEM</span>':'<span class="tag ppl">PERSON</span>';
+  let acts="";
+  if(t.state==="todo") acts = t.kind==="sys"
+    ? `<div class="acts"><button class="approve" data-act="approve" data-id="${t.id}">✓ Approve</button><button class="reject" data-act="reject" data-id="${t.id}">✕ Reject</button></div>`
+    : `<div class="acts"><button class="ghost" data-act="doing" data-id="${t.id}">Start</button><button class="approve" data-act="approve" data-id="${t.id}">Mark done</button></div>`;
+  else if(t.state==="doing") acts = `<div class="acts"><button class="approve" data-act="approve" data-id="${t.id}">Mark done</button></div>`;
+  return `<div class="task${t.state==="done"?' ':''}"><div class="row1">${tag}<span class="ttl">${t.title}${t.state==="done"?' <span class="check">✓</span>':''}</span></div>
+    ${t.why?`<div class="why">Why: ${t.why}</div>`:''}<div class="who">${t.who}</div>${acts}</div>`;
+}
+function renderTasks(){
+  const col = st => TASKS.filter(t=>t.state===st);
+  const todo=col("todo"), doing=col("doing"), done=col("done");
+  document.getElementById("taskcount").textContent = todo.length;
+  document.getElementById("tab-tasks").innerHTML = `
+    <div class="head"><h1>Tasks</h1><p>Findings become tasks — some the system does (you approve), some go to your team.</p></div>
+    <div class="board">
+      <div class="col"><h3>To-do <span class="ct">${todo.length}</span></h3>${todo.map(taskCard).join("")||'<p class="muted">Nothing to do 🎉</p>'}</div>
+      <div class="col"><h3>Doing <span class="ct">${doing.length}</span></h3>${doing.map(taskCard).join("")||'<p class="muted">—</p>'}</div>
+      <div class="col"><h3>Done <span class="ct">${done.length}</span></h3>${done.map(taskCard).join("")||'<p class="muted">—</p>'}</div>
+    </div>
+    <p class="muted" style="font-size:12.5px;margin-top:14px">The <b>Done</b> column is also your receipt log. (Demo — actions move cards; the real app writes to GA4/Meta.)</p>`;
+}
+
+// ---------- UTM builder (fully functional) ----------
+const LS_KEY="evid_utm_links";
+function normVal(v){ if(!v) return ""; if(v.includes("{{")) return v.trim(); return v.trim().toLowerCase().replace(/[\s]+/g,"_").replace(/[^a-z0-9_\-{}.]/g,""); }
+function buildUrl(f){
+  if(!f.url) return "";
+  const p=[]; const add=(k,v)=>{ if(v) p.push(`${k}=${encodeURIComponent(v).replace(/%7B%7B/g,"{{").replace(/%7D%7D/g,"}}").replace(/%2E/g,".")}`); };
+  add("utm_source",f.source); add("utm_medium",f.medium); add("utm_campaign",f.campaign); add("utm_id",f.id); add("utm_term",f.term); add("utm_content",f.content);
+  const base=f.url.trim(); return p.length? base+(base.includes("?")?"&":"?")+p.join("&") : base;
+}
+function getFields(){
+  return { url:v("u-url"), source:normVal(v("u-source")), medium:normVal(v("u-medium")),
+    campaign:normVal(v("u-campaign")), id:normVal(v("u-id")), term:normVal(v("u-term")), content:normVal(v("u-content")) };
+}
+const v = id => (document.getElementById(id)||{}).value || "";
+function refreshUtm(){
+  const f=getFields(); const url=buildUrl(f);
+  document.getElementById("u-out").textContent = url || "Fill in the website URL to generate a link.";
+  document.getElementById("u-save").disabled = !url;
+  const warn = !f.url ? "" : (!f.source||!f.medium) ? "Tip: set at least Source and Medium so GA4 can attribute the visit." : "";
+  document.getElementById("u-warn").textContent = warn;
+}
+function loadLinks(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||"[]"); }catch(e){ return []; } }
+function saveLinks(a){ localStorage.setItem(LS_KEY, JSON.stringify(a)); }
+function renderLib(){
+  const links=loadLinks();
+  document.getElementById("u-lib").innerHTML = links.length
+    ? links.map((l,i)=>`<div class="item"><code>${l}</code><button class="mini" data-copy="${i}">Copy</button><button class="mini" data-del="${i}">Delete</button></div>`).join("")
+    : '<p class="muted" style="font-size:12.5px">No saved links yet — build one and hit “Save to library”.</p>';
+}
+function renderUtm(){
+  document.getElementById("tab-utm").innerHTML = `
+    <div class="head"><h1>UTM Builder</h1><p>Make consistent tagged links — this is what connects a Meta ad to a GA4 visit. <b style="color:var(--good)">Fully working — saves to this browser.</b></p></div>
+    <div class="card"><div class="c-body"><div class="form">
+      <div class="fld"><label>Website URL</label><input id="u-url" value="https://beegraphy.com/" /></div>
+      <div class="two"><div class="fld"><label>Source</label><input id="u-source" value="facebook" /></div><div class="fld"><label>Medium</label><input id="u-medium" value="paid_social" /></div></div>
+      <div class="two"><div class="fld"><label>Campaign</label><input id="u-campaign" placeholder="spring_launch" /></div><div class="fld"><label>Campaign ID</label><input id="u-id" placeholder="optional" /></div></div>
+      <div class="two"><div class="fld"><label>Term (optional)</label><input id="u-term" /></div><div class="fld"><label>Content (optional)</label><input id="u-content" /></div></div>
+      <label class="toggle"><input type="checkbox" id="u-meta" /> Use Meta auto-fill tags ({{campaign.name}}, {{campaign.id}}, {{ad.id}})</label>
+      <div><label style="font-size:12px;color:var(--muted)">Generated link</label><div class="out" id="u-out"></div><div class="warnmsg" id="u-warn"></div></div>
+      <div style="display:flex;gap:10px"><button class="btn" id="u-copy">Copy link</button><button class="btn outline" id="u-save">Save to library</button></div>
+    </div>
+    <div class="lib" id="u-lib" style="margin-top:18px"></div>
+    </div></div>`;
+  ["u-url","u-source","u-medium","u-campaign","u-id","u-term","u-content"].forEach(id=>document.getElementById(id).addEventListener("input",refreshUtm));
+  document.getElementById("u-meta").addEventListener("change",e=>{
+    if(e.target.checked){ setv("u-campaign","{{campaign.name}}"); setv("u-id","{{campaign.id}}"); setv("u-content","{{ad.id}}"); }
+    else { ["u-campaign","u-id","u-content"].forEach(id=>setv(id,"")); }
+    refreshUtm();
+  });
+  document.getElementById("u-copy").addEventListener("click",()=>{ const t=document.getElementById("u-out").textContent; if(t&&t.startsWith("http")){ copy(t); } });
+  document.getElementById("u-save").addEventListener("click",()=>{ const t=document.getElementById("u-out").textContent; if(t&&t.startsWith("http")){ const a=loadLinks(); if(!a.includes(t)){ a.unshift(t); saveLinks(a); renderLib(); toast("Saved to library"); } else toast("Already saved"); } });
+  document.getElementById("u-lib").addEventListener("click",e=>{
+    const c=e.target.getAttribute("data-copy"), d=e.target.getAttribute("data-del");
+    const a=loadLinks();
+    if(c!==null){ copy(a[c]); } if(d!==null){ a.splice(d,1); saveLinks(a); renderLib(); }
+  });
+  refreshUtm(); renderLib();
+}
+const setv=(id,val)=>{ const el=document.getElementById(id); if(el) el.value=val; };
+function copy(t){ navigator.clipboard?.writeText(t).then(()=>toast("Copied")).catch(()=>toast("Copy failed")); }
+let toastT; function toast(msg){ const el=document.getElementById("toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),1400); }
+
+function renderSettings(){
+  document.getElementById("tab-settings").innerHTML = `
+    <div class="head"><h1>Settings</h1><p>Connect your accounts and manage who can help. (Demo — connections aren't live on this preview.)</p></div>
+    <div class="card"><div class="c-head"><h2>Connections</h2></div><div class="c-body">
+      <div class="setrow"><div><b>Google Analytics (GA4)</b><div class="muted" style="font-size:12.5px">Reads what people do on your site</div></div><span class="ok">● Demo</span></div>
+      <div class="setrow"><div><b>Meta Ads</b><div class="muted" style="font-size:12.5px">Reads spend & reach</div></div><span class="ok">● Demo</span></div>
+      <div class="setrow"><div><b>Google Tag Manager</b><div class="muted" style="font-size:12.5px">Needed to add new tracking</div></div><span class="muted">not set</span></div>
+    </div></div>
+    <div class="card"><div class="c-head"><h2>Team members</h2><span class="hint">so tasks can be assigned</span></div><div class="c-body">
+      <div class="setrow"><div class="who"><span class="av">A</span> Abhishek · <span class="muted">Approver</span></div><span class="muted">you</span></div>
+      <div class="setrow"><div class="who"><span class="av">D</span> Dmitri · <span class="muted">Developer</span></div><span class="muted">—</span></div>
+      <div class="setrow"><div class="who"><span class="av">M</span> Maria · <span class="muted">Marketing</span></div><span class="muted">—</span></div>
+    </div></div>`;
+}
+
+// ---------- wiring ----------
+function renderAll(){ renderDashboard(); renderAnalyze(); renderTasks(); renderReviews(); renderUtm(); renderSettings(); }
+document.getElementById("nav").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-tab]"); if(!b) return;
+  document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x===b));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="tab-"+b.dataset.tab));
+  document.querySelector(".main").scrollTop=0;
+});
+document.getElementById("range").addEventListener("change",e=>{ state.range=e.target.value; renderDashboard(); renderAnalyze(); });
+document.getElementById("tab-analyze").addEventListener("click",e=>{ const l=e.target.closest("[data-lens]"); if(l){ state.lens=l.dataset.lens; renderAnalyze(); } });
+document.getElementById("tab-tasks").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-act]"); if(!btn) return;
+  const id=+btn.dataset.id, act=btn.dataset.act, t=TASKS.find(x=>x.id===id); if(!t) return;
+  if(act==="approve"){ t.state="done"; t.who=(t.kind==="sys"?"just now · approved by you":"just now · marked done"); toast("Done ✓"); }
+  else if(act==="reject"){ TASKS=TASKS.filter(x=>x.id!==id); toast("Rejected"); }
+  else if(act==="doing"){ t.state="doing"; }
+  renderTasks();
+});
+renderAll();
 </script>
 </body>
 </html>
