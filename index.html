@@ -52,7 +52,14 @@
   .head{margin-bottom:22px}.head h1{font-size:26px;margin:0 0 4px;font-weight:700}.head p{margin:0;color:var(--muted);font-size:14.5px}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:17px 18px;box-shadow:var(--shadow)}
-  .kpi .k{color:var(--muted);font-size:12.5px;font-weight:600}.kpi .v{font-size:28px;font-weight:700;margin-top:8px}
+  .kpi .k{color:var(--muted);font-size:12.5px;font-weight:600}.kpi .v{font-size:26px;font-weight:700;margin-top:8px}
+  .headlines{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}
+  .hcard{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--r);padding:24px 24px;box-shadow:var(--shadow)}
+  .hcard.good{border-left-color:var(--good)}.hcard.bad{border-left-color:var(--bad)}.hcard.warn{border-left-color:var(--warn)}
+  .hcard .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);font-weight:700}
+  .hcard .big{font-family:"Bricolage Grotesque",sans-serif;font-size:44px;font-weight:800;line-height:1.02;margin:12px 0 8px;letter-spacing:-.025em;color:var(--ink)}
+  .hcard.good .big{color:var(--good)}.hcard.bad .big{color:var(--bad)}.hcard.warn .big{color:var(--warn)}
+  .hcard .sub{color:var(--muted);font-size:13.5px}.hcard .sub b{color:var(--ink);font-weight:700}
   .muted{color:var(--muted)}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow)}
   .c-head{display:flex;align-items:center;justify-content:space-between;padding:16px 19px;border-bottom:1px solid var(--line)}
@@ -212,10 +219,17 @@ function handleCommand(text){
 function renderDashboard(){
   const rows=scaled(state.range),spend=rows.reduce((s,c)=>s+c.spend,0),signups=rows.reduce((s,c)=>s+(c.signups||0),0),avg=signups?Math.round(spend/signups):null;
   const scored=rows.filter(c=>c.cps!=null),best=scored.reduce((a,b)=>a.cps<=b.cps?a:b),dear=scored.reduce((a,b)=>a.cps>=b.cps?a:b),untracked=rows.filter(c=>c.signups==null).length;
-  const summary=`${best.name} is your cheapest source of signups (${eur(best.cps)} each). ${dear.name} is the most expensive (${eur(dear.cps)}).`+(untracked?` ${untracked} campaign can't be scored yet — tracking isn't set up.`:"");
+  const wasted=rows.filter(c=>c.signups==null||c.signups===0).reduce((s,c)=>s+c.spend,0);
+  const third=untracked
+    ? `<div class="hcard warn"><div class="lbl">Blind spot</div><div class="big">${eur(wasted)}</div><div class="sub"><b>${untracked} campaign</b> with no tracking — can't be scored</div></div>`
+    : `<div class="hcard"><div class="lbl">Total spent</div><div class="big">${eur(spend)}</div><div class="sub"><b>${num(signups)}</b> signups from ads</div></div>`;
   document.getElementById("tab-dashboard").innerHTML=`
     <div class="head"><h1>Dashboard</h1><p>Where your ad money went — and what it brought back. (${RANGE_LABEL[state.range]})</p></div>
-    <div class="summary"><span class="ic">💡</span><p>${summary}</p></div>
+    <div class="headlines">
+      <div class="hcard good"><div class="lbl">Cheapest signups</div><div class="big">${eur(best.cps)}</div><div class="sub"><b>${best.name}</b> · per signup — your best spend</div></div>
+      <div class="hcard bad"><div class="lbl">Most expensive</div><div class="big">${eur(dear.cps)}</div><div class="sub"><b>${dear.name}</b> · per signup — overpaying</div></div>
+      ${third}
+    </div>
     <div class="kpis"><div class="kpi"><div class="k">Total spent</div><div class="v">${eur(spend)}</div></div><div class="kpi"><div class="k">Signups from ads</div><div class="v">${num(signups)}</div></div><div class="kpi"><div class="k">Avg cost per signup</div><div class="v">${eur(avg)}</div></div><div class="kpi"><div class="k">Campaigns</div><div class="v">${rows.length}</div></div></div>
     <div class="card"><div class="c-head"><h2>The spend funnel — by campaign</h2><span class="hint">money → results → cost each</span></div>
       <table><thead><tr><th>Campaign</th><th>Spent</th><th>Times shown</th><th>Clicks</th><th>Signups</th><th>First models</th><th>Cost / signup</th></tr></thead>
