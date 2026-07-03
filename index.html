@@ -167,11 +167,11 @@
 
 <script>
 // ---------- demo data: campaigns carry raw EVENT counts (goals derive from these) ----------
-const BASE=[
-  {name:"EU – Architects",color:"#12805c",spend:1180,impressions:96000,clicks:3420,events:{signup_completed:74,first_model_created:41,subscription_started:12}},
-  {name:"Retargeting – Visited",color:"#0e7c66",spend:640,impressions:22000,clicks:1910,events:{signup_completed:58,first_model_created:33,subscription_started:19}},
-  {name:"Global – Parametric",color:"#6d4bd6",spend:1360,impressions:210000,clicks:4050,events:{signup_completed:52,first_model_created:22,subscription_started:8}},
-  {name:"Students – Broad",color:"#b06a12",spend:1030,impressions:180000,clicks:5210,events:null},
+const DEFAULT_CAMPAIGNS=[
+  {name:"EU – Architects",id:"120210",color:"#12805c",spend:1180,impressions:96000,clicks:3420,events:{signup_completed:74,first_model_created:41,subscription_started:12}},
+  {name:"Retargeting – Visited",id:"120211",color:"#0e7c66",spend:640,impressions:22000,clicks:1910,events:{signup_completed:58,first_model_created:33,subscription_started:19}},
+  {name:"Global – Parametric",id:"120212",color:"#6d4bd6",spend:1360,impressions:210000,clicks:4050,events:{signup_completed:52,first_model_created:22,subscription_started:8}},
+  {name:"Students – Broad",id:"120213",color:"#b06a12",spend:1030,impressions:180000,clicks:5210,events:null},
 ];
 const MULT={"7d":0.25,"30d":1,"90d":2.9}, RANGE_LABEL={"7d":"Last 7 days","30d":"Last 30 days","90d":"Last 90 days"};
 const state={range:"30d",lens:"campaigns",goalIdx:0};
@@ -179,7 +179,7 @@ const eur=n=>n==null?"—":"€"+Math.round(n).toLocaleString();
 const num=n=>n==null?"—":Math.round(n).toLocaleString();
 const pct=n=>n==null?"—":n.toFixed(1)+"%";
 const eur2=n=>n==null?"—":"€"+n.toFixed(2);
-function scaled(range){const m=MULT[range];return BASE.map(c=>{
+function scaled(range){const m=MULT[range];return CAMPAIGNS.map(c=>{
   const ev=c.events?Object.fromEntries(Object.entries(c.events).map(([k,v])=>[k,Math.max(1,Math.round(v*m))])):null;
   const spend=Math.round(c.spend*m),signups=ev?(ev.signup_completed||0):null;
   return{...c,spend,impressions:Math.round(c.impressions*m),clicks:Math.round(c.clicks*m),events:ev,signups,firstModels:ev?(ev.first_model_created||0):null,cps:signups?Math.round(spend/signups):null}})}
@@ -198,6 +198,7 @@ function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
 const DEFAULT_GOALS=[{name:"Signup",events:["signup_completed"]},{name:"Activation",events:["first_model_created"]},{name:"Subscription",events:["subscription_started"]}];
 const AVAILABLE_EVENTS=["signup_completed","first_model_created","subscription_started","project_shared","upgrade_clicked","page_view"];
 let GOALS=load("evid_goals",DEFAULT_GOALS);const saveGoals=()=>save("evid_goals",GOALS);
+let CAMPAIGNS=load("evid_campaigns",DEFAULT_CAMPAIGNS);const saveCampaigns=()=>save("evid_campaigns",CAMPAIGNS);
 let TEAM=load("evid_team",["Abhishek","Dmitri","Maria"]);
 let TASKS=load("evid_tasks",[
   {id:1,kind:"sys",title:"Add event first_model_created",why:"2 campaigns can't be scored without it.",who:"System",state:"todo"},
@@ -243,7 +244,7 @@ function handleCommand(text){
 // ---------- Dashboard ----------
 function renderDashboard(){
   const rows=scaled(state.range),spend=rows.reduce((s,c)=>s+c.spend,0),signups=rows.reduce((s,c)=>s+(c.signups||0),0),avg=signups?Math.round(spend/signups):null;
-  const scored=rows.filter(c=>c.cps!=null),best=scored.reduce((a,b)=>a.cps<=b.cps?a:b),dear=scored.reduce((a,b)=>a.cps>=b.cps?a:b),untracked=rows.filter(c=>c.signups==null).length;
+  const scored=rows.filter(c=>c.cps!=null);const best=scored.length?scored.reduce((a,b)=>a.cps<=b.cps?a:b):{name:"—",cps:null};const dear=scored.length?scored.reduce((a,b)=>a.cps>=b.cps?a:b):{name:"—",cps:null};const untracked=rows.filter(c=>c.signups==null).length;
   const wasted=rows.filter(c=>c.signups==null||c.signups===0).reduce((s,c)=>s+c.spend,0);
   const third=untracked
     ? `<div class="hcard warn"><div class="lbl">Blind spot</div><div class="big">${eur(wasted)}</div><div class="sub"><b>${untracked} campaign</b> with no tracking — can't be scored</div></div>`
@@ -342,6 +343,7 @@ function renderUtm(){
     <div class="card"><div class="c-body"><div class="form">
       <div class="fld"><label>Website URL</label><input id="u-url" value="https://beegraphy.com/" /></div>
       <div class="two"><div class="fld"><label>Source</label><input id="u-source" value="facebook" /></div><div class="fld"><label>Medium</label><input id="u-medium" value="paid_social" /></div></div>
+      <div class="fld"><label>Pick a campaign (from your registry) — keeps name + id consistent</label><select id="u-camp-pick" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 13px;color:var(--ink);font:inherit"><option value="">— choose to auto-fill campaign + id —</option>${CAMPAIGNS.map((c,i)=>`<option value="${i}">${c.name}${c.id?` (${c.id})`:""}</option>`).join("")}</select></div>
       <div class="two"><div class="fld"><label>Campaign</label><input id="u-campaign" placeholder="spring_launch" /></div><div class="fld"><label>Campaign ID</label><input id="u-id" placeholder="optional" /></div></div>
       <div class="two"><div class="fld"><label>Term (optional)</label><input id="u-term" /></div><div class="fld"><label>Content (optional)</label><input id="u-content" /></div></div>
       <label class="toggle"><input type="checkbox" id="u-meta" /> Use Meta auto-fill tags ({{campaign.name}}, {{campaign.id}}, {{ad.id}})</label>
@@ -353,6 +355,7 @@ function renderUtm(){
   document.getElementById("u-copy").addEventListener("click",()=>{const t=document.getElementById("u-out").textContent;if(t.startsWith("http"))copy(t)});
   document.getElementById("u-save").addEventListener("click",()=>{const t=document.getElementById("u-out").textContent;if(t.startsWith("http")){const a=loadLinks();if(!a.includes(t)){a.unshift(t);saveLinks(a);renderLib();toast("Saved to library")}else toast("Already saved")}});
   document.getElementById("u-lib").addEventListener("click",e=>{const c=e.target.getAttribute("data-copy"),d=e.target.getAttribute("data-del"),a=loadLinks();if(c!==null)copy(a[c]);if(d!==null){a.splice(d,1);saveLinks(a);renderLib()}});
+  const cp=document.getElementById("u-camp-pick");if(cp)cp.addEventListener("change",e=>{const c=CAMPAIGNS[+e.target.value];if(c){setv("u-campaign",normVal(c.name));setv("u-id",c.id||"");refreshUtm();toast("Filled from “"+c.name+"”")}});
   refreshUtm();renderLib();
 }
 function copy(t){navigator.clipboard?.writeText(t).then(()=>toast("Copied")).catch(()=>toast("Copy failed"))}
@@ -364,6 +367,11 @@ function renderSettings(){
       <div class="setrow"><div><b>Google Analytics (GA4)</b><div class="muted" style="font-size:12.5px">Reads site behavior · will read+write later</div></div><span class="ok">● Demo</span></div>
       <div class="setrow"><div><b>Meta Ads</b><div class="muted" style="font-size:12.5px">Reads spend & reach (read-only)</div></div><span class="ok">● Demo</span></div>
       <div class="setrow"><div><b>Google Tag Manager</b><div class="muted" style="font-size:12.5px">Needed to add new tracking</div></div><span class="muted">not set</span></div>
+    </div></div>
+    <div class="card"><div class="c-head"><h2>Campaigns</h2><span class="hint">shared identity — UTM · reports · goals all use these</span></div><div class="c-body">
+      ${CAMPAIGNS.map((c,i)=>`<div class="setrow"><div class="who" style="flex:1;gap:9px"><span class="dot" style="background:${c.color}"></span><input data-cname="${i}" value="${c.name}" style="flex:1;min-width:120px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 9px;color:var(--ink);font:inherit;font-size:13px" /><input data-cid="${i}" value="${c.id||""}" placeholder="id" style="width:96px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 9px;color:var(--muted);font-size:12px;font-family:'SF Mono',Menlo,monospace" /></div><button class="mini" data-delcamp="${i}" style="color:var(--bad)">Remove</button></div>`).join("")}
+      <div class="setrow"><input id="nc-name" placeholder="New campaign name" style="flex:1;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--ink)" /><input id="nc-id" placeholder="Meta id" style="width:110px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--ink)" /><button class="btn" id="nc-add">+ Add</button></div>
+      <p class="muted" style="font-size:12px;margin-top:6px">Rename or re-ID a campaign here and it updates <b>everywhere</b> — UTM Builder, reports, and goal attribution. This is the bridge that keeps GA4 ↔ Meta aligned.</p>
     </div></div>
     <div class="card"><div class="c-head"><h2>Conversion goals</h2><span class="hint">you control what counts — each tracked independently</span></div><div class="c-body">
       ${GOALS.map((g,i)=>`<div class="setrow"><div><b>${g.name}</b> &nbsp;${g.events.map(e=>`<span class="evtag">${e}</span>`).join(" ")||'<span class="muted" style="font-size:12px">no events</span>'}</div><button class="mini" data-delgoal="${i}" style="color:var(--bad)">Remove</button></div>`).join("")}
@@ -396,9 +404,16 @@ document.getElementById("tab-tasks").addEventListener("click",e=>{
 document.getElementById("tab-tasks").addEventListener("change",e=>{const r=e.target.getAttribute("data-reassign");if(r){const t=TASKS.find(x=>x.id===+r);if(t){t.who=e.target.value;t.kind="ppl";saveTasks();toast("Reassigned to "+t.who)}}});
 document.getElementById("tab-settings").addEventListener("click",e=>{
   if(e.target.id==="tm-add"){const n=cap(document.getElementById("tm-name").value.trim());if(n&&!TEAM.includes(n)){TEAM.push(n);save("evid_team",TEAM);renderSettings();renderTasks();toast(n+" added")}return}
+  if(e.target.id==="nc-add"){const name=document.getElementById("nc-name").value.trim(),id=document.getElementById("nc-id").value.trim();if(!name){toast("Name the campaign");return}const cl=["#12805c","#0e7c66","#6d4bd6","#b06a12","#c23a2b","#2f7fd6"];CAMPAIGNS.push({name,id,color:cl[CAMPAIGNS.length%cl.length],spend:0,impressions:0,clicks:0,events:null});saveCampaigns();renderSettings();renderDashboard();renderAnalyze();renderUtm();toast("Campaign added");return}
   if(e.target.id==="ng-add"){const name=cap(document.getElementById("ng-name").value.trim());const evs=[...document.querySelectorAll("#tab-settings .evpick input:checked")].map(x=>x.value);if(!name){toast("Name the goal");return}if(!evs.length){toast("Pick at least one event");return}if(GOALS.some(g=>g.name.toLowerCase()===name.toLowerCase())){toast("Goal already exists");return}GOALS.push({name,events:evs});saveGoals();renderSettings();renderAnalyze();toast(name+" goal added");return}
   const dt=e.target.getAttribute("data-delteam");if(dt!==null){TEAM.splice(+dt,1);save("evid_team",TEAM);renderSettings();renderTasks();toast("Removed");return}
   const dg=e.target.getAttribute("data-delgoal");if(dg!==null){GOALS.splice(+dg,1);if(state.goalIdx>=GOALS.length)state.goalIdx=0;saveGoals();renderSettings();renderAnalyze();toast("Goal removed");return}
+  const dc=e.target.getAttribute("data-delcamp");if(dc!==null){CAMPAIGNS.splice(+dc,1);saveCampaigns();renderSettings();renderDashboard();renderAnalyze();renderUtm();toast("Campaign removed");return}
+});
+document.getElementById("tab-settings").addEventListener("change",e=>{
+  const cn=e.target.getAttribute("data-cname"),ci=e.target.getAttribute("data-cid");
+  if(cn!==null){CAMPAIGNS[+cn].name=e.target.value;saveCampaigns();renderDashboard();renderAnalyze();renderUtm();toast("Renamed")}
+  if(ci!==null){CAMPAIGNS[+ci].id=e.target.value;saveCampaigns();renderUtm();toast("ID updated")}
 });
 renderAll();
 </script>
