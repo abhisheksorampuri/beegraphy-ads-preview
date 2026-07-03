@@ -29,6 +29,7 @@
   .cmd input::placeholder{color:var(--faint)}
   .cmd kbd{color:var(--faint);font-size:11px;border:1px solid var(--line);border-radius:5px;padding:1px 6px;background:var(--panel)}
   .chip,select.chip{display:inline-flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 13px;color:var(--ink);font-weight:600;white-space:nowrap;cursor:pointer;font-size:13px}
+  #goalsel{font-weight:700;color:var(--accent)}
   .avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--accent)}
   .body{display:grid;grid-template-columns:230px 1fr;overflow:hidden}
   .sidebar{background:#fbf9f4;border-right:1px solid var(--line);padding:16px 13px;display:flex;flex-direction:column;overflow-y:auto}
@@ -50,16 +51,16 @@
   .panel{display:none}.panel.active{display:block;animation:fade .2s ease}
   @keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
   .head{margin-bottom:22px}.head h1{font-size:26px;margin:0 0 4px;font-weight:700}.head p{margin:0;color:var(--muted);font-size:14.5px}
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
-  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:17px 18px;box-shadow:var(--shadow)}
-  .kpi .k{color:var(--muted);font-size:12.5px;font-weight:600}.kpi .v{font-size:26px;font-weight:700;margin-top:8px}
   .headlines{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}
-  .hcard{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--r);padding:24px 24px;box-shadow:var(--shadow)}
+  .hcard{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--r);padding:24px;box-shadow:var(--shadow)}
   .hcard.good{border-left-color:var(--good)}.hcard.bad{border-left-color:var(--bad)}.hcard.warn{border-left-color:var(--warn)}
   .hcard .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);font-weight:700}
   .hcard .big{font-family:"Bricolage Grotesque",sans-serif;font-size:44px;font-weight:800;line-height:1.02;margin:12px 0 8px;letter-spacing:-.025em;color:var(--ink)}
   .hcard.good .big{color:var(--good)}.hcard.bad .big{color:var(--bad)}.hcard.warn .big{color:var(--warn)}
   .hcard .sub{color:var(--muted);font-size:13.5px}.hcard .sub b{color:var(--ink);font-weight:700}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:17px 18px;box-shadow:var(--shadow)}
+  .kpi .k{color:var(--muted);font-size:12.5px;font-weight:600}.kpi .v{font-size:26px;font-weight:700;margin-top:8px}
   .muted{color:var(--muted)}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow)}
   .c-head{display:flex;align-items:center;justify-content:space-between;padding:16px 19px;border-bottom:1px solid var(--line)}
@@ -81,7 +82,7 @@
   .lens:hover{border-color:var(--accent);color:var(--ink)}
   .lens.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
   .bars{display:flex;flex-direction:column;gap:13px}
-  .barrow{display:grid;grid-template-columns:150px 1fr 120px;align-items:center;gap:12px;font-size:13.5px;font-weight:500}
+  .barrow{display:grid;grid-template-columns:150px 1fr 140px;align-items:center;gap:12px;font-size:13.5px;font-weight:500}
   .track{height:10px;background:var(--panel-2);border-radius:6px;overflow:hidden}.fill{height:100%;border-radius:6px}.delta{text-align:right;font-size:12.5px;color:var(--muted)}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   .board{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -116,10 +117,12 @@
   .lib{margin-top:8px}
   .lib .item{display:flex;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:9px;background:var(--panel)}
   .lib .item code{flex:1;font-size:12px;color:var(--accent);word-break:break-all;font-family:"SF Mono",Menlo,Consolas,monospace}
-  .lib .item .mini{background:var(--panel-2);border:none;color:var(--muted);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px;font-weight:600}
+  .lib .item .mini,.mini{background:var(--panel-2);border:none;color:var(--muted);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px;font-weight:600}
   .warnmsg{color:var(--warn);font-size:12px;margin-top:5px;min-height:16px}
   .setrow{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);gap:10px}
   .setrow:last-child{border:none}.ok{color:var(--good);font-weight:700;font-size:13px}
+  .evtag{display:inline-block;background:var(--panel-2);color:var(--muted);border-radius:6px;padding:2px 8px;font-size:11px;font-family:"SF Mono",Menlo,monospace}
+  .evpick{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--muted);cursor:pointer;font-family:"SF Mono",Menlo,monospace}
   .modebadge{position:fixed;bottom:12px;right:16px;background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:11px;padding:5px 12px;border-radius:20px;box-shadow:var(--shadow);font-weight:600}
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:700;padding:10px 18px;border-radius:22px;opacity:0;transition:opacity .2s;pointer-events:none;font-size:13px;box-shadow:0 8px 24px -8px rgba(0,0,0,.4)}
   .toast.show{opacity:1}
@@ -159,25 +162,42 @@
     </main>
   </div>
 </div>
-<div class="modebadge">demo data · command box + tasks + UTM are live</div>
+<div class="modebadge">demo data · metrics are computed exactly, never guessed</div>
 <div class="toast" id="toast"></div>
 
 <script>
+// ---------- demo data: campaigns carry raw EVENT counts (goals derive from these) ----------
 const BASE=[
-  {name:"EU – Architects",color:"#12805c",spend:1180,impressions:96000,clicks:3420,signups:74,firstModels:41},
-  {name:"Retargeting – Visited",color:"#0e7c66",spend:640,impressions:22000,clicks:1910,signups:58,firstModels:33},
-  {name:"Global – Parametric",color:"#6d4bd6",spend:1360,impressions:210000,clicks:4050,signups:52,firstModels:22},
-  {name:"Students – Broad",color:"#b06a12",spend:1030,impressions:180000,clicks:5210,signups:null,firstModels:null},
+  {name:"EU – Architects",color:"#12805c",spend:1180,impressions:96000,clicks:3420,events:{signup_completed:74,first_model_created:41,subscription_started:12}},
+  {name:"Retargeting – Visited",color:"#0e7c66",spend:640,impressions:22000,clicks:1910,events:{signup_completed:58,first_model_created:33,subscription_started:19}},
+  {name:"Global – Parametric",color:"#6d4bd6",spend:1360,impressions:210000,clicks:4050,events:{signup_completed:52,first_model_created:22,subscription_started:8}},
+  {name:"Students – Broad",color:"#b06a12",spend:1030,impressions:180000,clicks:5210,events:null},
 ];
 const MULT={"7d":0.25,"30d":1,"90d":2.9}, RANGE_LABEL={"7d":"Last 7 days","30d":"Last 30 days","90d":"Last 90 days"};
-const state={range:"30d",lens:"campaigns"};
+const state={range:"30d",lens:"campaigns",goalIdx:0};
 const eur=n=>n==null?"—":"€"+Math.round(n).toLocaleString();
 const num=n=>n==null?"—":Math.round(n).toLocaleString();
-function scaled(range){const m=MULT[range];return BASE.map(c=>{const spend=Math.round(c.spend*m),signups=c.signups==null?null:Math.max(1,Math.round(c.signups*m));return{...c,spend,impressions:Math.round(c.impressions*m),clicks:Math.round(c.clicks*m),signups,firstModels:c.firstModels==null?null:Math.round(c.firstModels*m),cps:signups?Math.round(spend/signups):null}})}
+const pct=n=>n==null?"—":n.toFixed(1)+"%";
+const eur2=n=>n==null?"—":"€"+n.toFixed(2);
+function scaled(range){const m=MULT[range];return BASE.map(c=>{
+  const ev=c.events?Object.fromEntries(Object.entries(c.events).map(([k,v])=>[k,Math.max(1,Math.round(v*m))])):null;
+  const spend=Math.round(c.spend*m),signups=ev?(ev.signup_completed||0):null;
+  return{...c,spend,impressions:Math.round(c.impressions*m),clicks:Math.round(c.clicks*m),events:ev,signups,firstModels:ev?(ev.first_model_created||0):null,cps:signups?Math.round(spend/signups):null}})}
 function costClass(c){if(c==null)return"na";if(c<=18)return"cost-good";if(c<=30)return"cost-mid";return"cost-bad"}
+// ---- fixed metric formulas (deterministic; the AI never produces a number) ----
+function goalCount(c,g){if(!c.events||!g)return null;return g.events.reduce((s,e)=>s+(c.events[e]||0),0)}
+function costPerGoal(c,g){const n=goalCount(c,g);return n&&n>0?c.spend/n:null}
+function convRate(c,g){const n=goalCount(c,g);return c.clicks&&n!=null?n/c.clicks*100:null}
+const ctr=c=>c.clicks&&c.impressions?c.clicks/c.impressions*100:null;
+const cpc=c=>c.clicks?c.spend/c.clicks:null;
+const cpm=c=>c.impressions?c.spend/c.impressions*1000:null;
+// ---------- persistence ----------
 const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
 function load(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+const DEFAULT_GOALS=[{name:"Signup",events:["signup_completed"]},{name:"Activation",events:["first_model_created"]},{name:"Subscription",events:["subscription_started"]}];
+const AVAILABLE_EVENTS=["signup_completed","first_model_created","subscription_started","project_shared","upgrade_clicked","page_view"];
+let GOALS=load("evid_goals",DEFAULT_GOALS);const saveGoals=()=>save("evid_goals",GOALS);
 let TEAM=load("evid_team",["Abhishek","Dmitri","Maria"]);
 let TASKS=load("evid_tasks",[
   {id:1,kind:"sys",title:"Add event first_model_created",why:"2 campaigns can't be scored without it.",who:"System",state:"todo"},
@@ -187,6 +207,8 @@ let TASKS=load("evid_tasks",[
 ]);
 const saveTasks=()=>save("evid_tasks",TASKS);
 const nextId=()=>Math.max(0,...TASKS.map(t=>t.id))+1;
+function curGoal(){return GOALS[state.goalIdx]||GOALS[0]||{name:"—",events:[]}}
+// ---------- command box ----------
 function showResp(html){const el=document.getElementById("cmdresp");el.innerHTML='<span class="ic">💬</span><div style="flex:1">'+html+'</div><button class="x" onclick="document.getElementById(\'cmdresp\').classList.remove(\'show\')">×</button>';el.classList.add("show")}
 function findPerson(name){if(!name)return null;const n=name.toLowerCase();return TEAM.find(p=>p.toLowerCase()===n)||null}
 function handleCommand(text){
@@ -201,21 +223,24 @@ function handleCommand(text){
     showResp(`Created task <b>“${task.title}”</b>${who?` and assigned it to <b>${who}</b>`:" for the <b>System</b> to do"}. See the <b>Tasks</b> tab.`);
     toast("Task created");gotoTab("tasks");return;
   }
-  const rows=scaled(state.range),q=t.toLowerCase(),scored=rows.filter(c=>c.cps!=null);
-  const spend=rows.reduce((s,c)=>s+c.spend,0),signups=rows.reduce((s,c)=>s+(c.signups||0),0);
+  const rows=scaled(state.range),q=t.toLowerCase(),g=curGoal();
+  const withGoal=rows.map(c=>({c,cost:costPerGoal(c,g)})).filter(x=>x.cost!=null);
+  const spend=rows.reduce((s,c)=>s+c.spend,0),gtot=rows.reduce((s,c)=>s+(goalCount(c,g)||0),0);
   let ans;
-  if(/cheap|best|lowest cost|most efficient/.test(q)){const b=scored.reduce((a,c)=>a.cps<=c.cps?a:c);ans=`<b>${b.name}</b> is your cheapest source of signups at <b>${eur(b.cps)}</b> each (${RANGE_LABEL[state.range]}).`}
-  else if(/expensive|worst|highest cost/.test(q)){const d=scored.reduce((a,c)=>a.cps>=c.cps?a:c);ans=`<b>${d.name}</b> is the most expensive at <b>${eur(d.cps)}</b> per signup.`}
+  if(/cheap|best|lowest cost|most efficient/.test(q)&&withGoal.length){const b=withGoal.reduce((a,x)=>a.cost<=x.cost?a:x);ans=`<b>${b.c.name}</b> is your cheapest source of <b>${g.name}</b> at <b>${eur2(b.cost)}</b> each (${RANGE_LABEL[state.range]}).`}
+  else if(/expensive|worst|highest cost/.test(q)&&withGoal.length){const d=withGoal.reduce((a,x)=>a.cost>=x.cost?a:x);ans=`<b>${d.c.name}</b> is the most expensive for <b>${g.name}</b> at <b>${eur2(d.cost)}</b> each.`}
   else if(/total spend|how much.*spen|spend total/.test(q)){ans=`You spent <b>${eur(spend)}</b> across ${rows.length} campaigns (${RANGE_LABEL[state.range]}).`}
-  else if(/wasted|no signup|unscored|not tracked/.test(q)){const w=rows.filter(c=>c.signups==null||c.signups===0);ans=`<b>${eur(w.reduce((s,c)=>s+c.spend,0))}</b> went to ${w.length} campaign(s) with no tracked signups${w.length?": "+w.map(c=>c.name).join(", "):""}.`}
-  else if(/most signup|top campaign|best signup|which.*signup/.test(q)){const b=scored.reduce((a,c)=>(a.signups||0)>=(c.signups||0)?a:c);ans=`<b>${b.name}</b> brought the most signups: <b>${num(b.signups)}</b>.`}
-  else if(/most click|highest click/.test(q)){const b=rows.reduce((a,c)=>a.clicks>=c.clicks?a:c);ans=`<b>${b.name}</b> got the most clicks: <b>${num(b.clicks)}</b>.`}
+  else if(/wasted|no signup|unscored|not tracked/.test(q)){const w=rows.filter(c=>{const n=goalCount(c,g);return n==null||n===0});ans=`<b>${eur(w.reduce((s,c)=>s+c.spend,0))}</b> went to ${w.length} campaign(s) with no tracked <b>${g.name}</b>${w.length?": "+w.map(c=>c.name).join(", "):""}.`}
+  else if(/ctr|click.?through/.test(q)){const b=rows.reduce((a,c)=>(ctr(c)||0)>=(ctr(a)||0)?c:a);ans=`Highest CTR: <b>${b.name}</b> at <b>${pct(ctr(b))}</b>.`}
+  else if(/cpc|cost per click/.test(q)){const b=rows.reduce((a,c)=>(cpc(c)||9e9)<=(cpc(a)||9e9)?c:a);ans=`Lowest CPC: <b>${b.name}</b> at <b>${eur2(cpc(b))}</b>.`}
+  else if(/most|top campaign|which.*(signup|convert|activ|subscri)/.test(q)){const b=rows.reduce((a,c)=>(goalCount(c,g)||0)>=(goalCount(a,g)||0)?c:a);ans=`<b>${b.c?b.c.name:b.name}</b> brought the most <b>${g.name}</b>: <b>${num(goalCount(b,g))}</b>.`}
   else if(/how many campaign|number of campaign/.test(q)){ans=`You have <b>${rows.length}</b> campaigns running.`}
-  else if(/cost per signup|average cost|avg cost/.test(q)){ans=`Average cost per signup is <b>${eur(signups?Math.round(spend/signups):null)}</b> (${num(signups)} signups on ${eur(spend)}).`}
-  else if(/total signup|how many signup/.test(q)){ans=`<b>${num(signups)}</b> signups came from ads (${RANGE_LABEL[state.range]}).`}
-  else{ans=`I can answer things like: <b>which campaign is cheapest?</b> · <b>total spend</b> · <b>wasted spend</b> · <b>most signups</b> · <b>cost per signup</b>. Or assign a task: <b>assign &lt;what&gt; to &lt;name&gt;</b>.`}
+  else if(/cost per|average cost|avg cost/.test(q)){ans=`Average cost per <b>${g.name}</b> is <b>${eur2(gtot?spend/gtot:null)}</b> (${num(gtot)} on ${eur(spend)}).`}
+  else if(/how many|total/.test(q)){ans=`<b>${num(gtot)}</b> <b>${g.name}</b> conversions came from ads (${RANGE_LABEL[state.range]}). Pick a different goal in Analyze to switch.`}
+  else{ans=`I answer exact metrics for the <b>${g.name}</b> goal: <b>which campaign is cheapest?</b> · <b>total spend</b> · <b>wasted spend</b> · <b>highest CTR</b> · <b>cost per ${g.name.toLowerCase()}</b>. Change the goal in Analyze. Or assign: <b>assign &lt;what&gt; to &lt;name&gt;</b>.`}
   showResp(ans);
 }
+// ---------- Dashboard ----------
 function renderDashboard(){
   const rows=scaled(state.range),spend=rows.reduce((s,c)=>s+c.spend,0),signups=rows.reduce((s,c)=>s+(c.signups||0),0),avg=signups?Math.round(spend/signups):null;
   const scored=rows.filter(c=>c.cps!=null),best=scored.reduce((a,b)=>a.cps<=b.cps?a:b),dear=scored.reduce((a,b)=>a.cps>=b.cps?a:b),untracked=rows.filter(c=>c.signups==null).length;
@@ -235,18 +260,47 @@ function renderDashboard(){
       <table><thead><tr><th>Campaign</th><th>Spent</th><th>Times shown</th><th>Clicks</th><th>Signups</th><th>First models</th><th>Cost / signup</th></tr></thead>
       <tbody>${rows.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${eur(c.spend)}</td><td>${num(c.impressions)}</td><td>${num(c.clicks)}</td><td>${c.signups==null?'<span class="na">— not tracked</span>':num(c.signups)}</td><td>${c.firstModels==null?'<span class="na">—</span>':num(c.firstModels)}</td><td>${c.cps==null?'<span class="na">unknown</span>':`<span class="${costClass(c.cps)}">${eur(c.cps)}</span>${c.name===best.name?' <span class="pill best">BEST</span>':''}`}</td></tr>`).join("")}</tbody></table></div>`;
 }
+// ---------- Analyze (goal selector + 4 lenses, exact metrics) ----------
 function renderAnalyze(){
-  const rows=scaled(state.range),LENSES=[["campaigns","Campaigns"],["funnel","Where people drop off"],["wasted","Wasted spend"]];let body="";
-  if(state.lens==="campaigns"){body=`<div class="card"><div class="c-head"><h2>By campaign</h2><span class="hint">spend → results → cost each</span></div><table><thead><tr><th>Campaign</th><th>Spent</th><th>Clicks</th><th>Signups</th><th>Cost / signup</th></tr></thead><tbody>${rows.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${eur(c.spend)}</td><td>${num(c.clicks)}</td><td>${c.signups==null?'<span class="na">—</span>':num(c.signups)}</td><td>${c.cps==null?'<span class="na">unknown</span>':eur(c.cps)}</td></tr>`).join("")}</tbody></table></div>`}
-  else if(state.lens==="funnel"){const clicks=rows.reduce((s,c)=>s+c.clicks,0),signups=rows.reduce((s,c)=>s+(c.signups||0),0),fm=rows.reduce((s,c)=>s+(c.firstModels||0),0),steps=[["Clicks",clicks,"var(--accent)"],["Signups",signups,"var(--good)"],["First models",fm,"var(--violet)"]];body=`<div class="card"><div class="c-head"><h2>Where people drop off</h2><span class="hint">clicks → signups → first models</span></div><div class="c-body"><div class="bars">${steps.map((s,i)=>`<div class="barrow"><span>${s[0]}</span><div class="track"><div class="fill" style="width:${Math.max(s[1]/clicks*100,2)}%;background:${s[2]}"></div></div><span class="delta">${num(s[1])}${i>0&&steps[i-1][1]?` · ${Math.round(s[1]/steps[i-1][1]*100)}%`:""}</span></div>`).join("")}</div></div></div>`}
-  else{const w=rows.filter(c=>c.signups==null||c.signups===0),tot=w.reduce((s,c)=>s+c.spend,0);body=`<div class="card"><div class="c-head"><h2>Wasted / unscored spend</h2><span class="hint">clicks bought, no measured signups</span></div><div class="c-body"><div class="summary" style="margin-bottom:14px"><span class="ic">⚠️</span><p><b>${eur(tot)}</b> went to campaigns with no tracked signups. Add tracking to score them.</p></div>${w.length?`<table><thead><tr><th>Campaign</th><th>Spent</th><th>Clicks</th></tr></thead><tbody>${w.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${eur(c.spend)}</td><td>${num(c.clicks)}</td></tr>`).join("")}</tbody></table>`:'<p class="muted">Every campaign has tracked signups. 🎉</p>'}</div></div>`}
-  document.getElementById("tab-analyze").innerHTML=`<div class="head"><h1>Analyze</h1><p>Fresh reports seen through different lenses. (${RANGE_LABEL[state.range]})</p></div><div class="lenses">${LENSES.map(l=>`<span class="lens${state.lens===l[0]?' on':''}" data-lens="${l[0]}">${l[1]}</span>`).join("")}</div>${body}`;
+  const rows=scaled(state.range),g=curGoal();
+  const LENSES=[["campaigns","Campaigns"],["funnel","Goal funnel"],["wasted","Wasted spend"],["ads","Ad metrics"]];
+  const gl=g.name.toLowerCase();let body="";
+  if(state.lens==="campaigns"){
+    body=`<div class="card"><div class="c-head"><h2>By campaign — ${g.name}</h2><span class="hint">exact cost & rate for “${g.name}”</span></div>
+      <table><thead><tr><th>Campaign</th><th>Spent</th><th>Clicks</th><th>${g.name}</th><th>Cost / ${gl}</th><th>Conv. rate</th></tr></thead>
+      <tbody>${rows.map(c=>{const gc=goalCount(c,g);return `<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${eur(c.spend)}</td><td>${num(c.clicks)}</td><td>${gc==null?'<span class="na">— not tracked</span>':num(gc)}</td><td>${costPerGoal(c,g)==null?'<span class="na">unknown</span>':eur2(costPerGoal(c,g))}</td><td>${convRate(c,g)==null?'<span class="na">—</span>':pct(convRate(c,g))}</td></tr>`}).join("")}</tbody></table></div>`;
+  } else if(state.lens==="funnel"){
+    const clicks=rows.reduce((s,c)=>s+c.clicks,0);
+    const steps=[["Clicks",clicks],...GOALS.map(gg=>[gg.name,rows.reduce((s,c)=>s+(goalCount(c,gg)||0),0)])];
+    const colors=["var(--accent)","var(--good)","var(--violet)","var(--warn)","var(--bad)"],maxv=clicks||1;
+    body=`<div class="card"><div class="c-head"><h2>Goal funnel</h2><span class="hint">clicks → ${GOALS.map(gg=>gg.name).join(" → ")}</span></div><div class="c-body"><div class="bars">
+      ${steps.map((s,i)=>`<div class="barrow"><span>${s[0]}</span><div class="track"><div class="fill" style="width:${Math.max(s[1]/maxv*100,2)}%;background:${colors[i%colors.length]}"></div></div><span class="delta">${num(s[1])}${i>0&&steps[i-1][1]?` · ${pct(s[1]/steps[i-1][1]*100)}`:""}</span></div>`).join("")}
+      </div></div></div>`;
+  } else if(state.lens==="wasted"){
+    const w=rows.filter(c=>{const gc=goalCount(c,g);return gc==null||gc===0}),tot=w.reduce((s,c)=>s+c.spend,0);
+    body=`<div class="card"><div class="c-head"><h2>Wasted spend — ${g.name}</h2><span class="hint">spend with zero “${g.name}”</span></div><div class="c-body"><div class="summary" style="margin-bottom:14px"><span class="ic">⚠️</span><p><b>${eur(tot)}</b> spent with no tracked <b>${g.name}</b>.</p></div>${w.length?`<table><thead><tr><th>Campaign</th><th>Spent</th><th>Clicks</th></tr></thead><tbody>${w.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${eur(c.spend)}</td><td>${num(c.clicks)}</td></tr>`).join("")}</tbody></table>`:`<p class="muted">Every campaign has ${g.name} conversions. 🎉</p>`}</div></div>`;
+  } else {
+    body=`<div class="card"><div class="c-head"><h2>Ad metrics</h2><span class="hint">CTR · CPC · CPM — exact, from spend/clicks/impressions</span></div>
+      <table><thead><tr><th>Campaign</th><th>CTR</th><th>CPC</th><th>CPM</th></tr></thead>
+      <tbody>${rows.map(c=>`<tr><td><span class="camp"><span class="dot" style="background:${c.color}"></span>${c.name}</span></td><td>${pct(ctr(c))}</td><td>${eur2(cpc(c))}</td><td>${eur2(cpm(c))}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+  const goalOpts=GOALS.map((gg,i)=>`<option value="${i}"${i===state.goalIdx?" selected":""}>${gg.name}</option>`).join("");
+  document.getElementById("tab-analyze").innerHTML=`
+    <div class="head"><h1>Analyze</h1><p>Exact metrics from your data — pick a goal and a lens. (${RANGE_LABEL[state.range]})</p></div>
+    <div style="display:flex;gap:11px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+      <span class="muted" style="font-size:13px;font-weight:700">Goal</span>
+      <select class="chip" id="goalsel">${goalOpts}</select>
+      <div class="lenses" style="margin:0">${LENSES.map(l=>`<span class="lens${state.lens===l[0]?' on':''}" data-lens="${l[0]}">${l[1]}</span>`).join("")}</div>
+    </div>
+    ${body}`;
 }
+// ---------- Reviews ----------
 function renderReviews(){
   const demo=[["Architects",45,"+12","var(--good)"],["Students",30,"−15","var(--violet)"],["Hobbyists",25,"+3","var(--accent)"]],geo=[["Europe",52,"+9","var(--good)"],["N. America",28,"−6","var(--accent)"],["Asia",20,"−3","var(--violet)"]];
   const bars=a=>a.map(d=>`<div class="barrow"><span>${d[0]}</span><div class="track"><div class="fill" style="width:${d[1]}%;background:${d[3]}"></div></div><span class="delta">${d[1]}% ${d[2]}</span></div>`).join("");
   document.getElementById("tab-reviews").innerHTML=`<div class="head"><h1>Reviews</h1><p>How your results — and who you reach — change over time.</p></div><div class="grid2"><div class="card"><div class="c-head"><h2>Who's signing up</h2><span class="hint">now vs 6 months ago</span></div><div class="c-body"><div class="bars">${bars(demo)}</div></div></div><div class="card"><div class="c-head"><h2>Where they're from</h2><span class="hint">now vs 6 months ago</span></div><div class="c-body"><div class="bars">${bars(geo)}</div></div></div></div><div class="card"><div class="c-head"><h2>Did it work?</h2><span class="hint">before / after a change</span></div><div class="c-body"><div style="display:flex;gap:14px;align-items:center"><span style="font-size:24px;font-weight:700;color:var(--good);font-family:'Bricolage Grotesque',sans-serif">−€5</span><div class="muted">Since <b style="color:var(--ink)">signup_completed</b> shipped, cost per signup dropped <b style="color:var(--ink)">€43 → €38</b>.</div></div></div></div>`;
 }
+// ---------- Tasks ----------
 function taskCard(t){
   const tag=t.kind==="sys"?'<span class="tag sys">SYSTEM</span>':'<span class="tag ppl">PERSON</span>';
   const opts=TEAM.map(p=>`<option${p===t.who?" selected":""}>${p}</option>`).join("");
@@ -273,6 +327,7 @@ function renderTasks(){
     </div>
     <p class="muted" style="font-size:12.5px;margin-top:14px">The <b>Done</b> column is your receipt log. (Demo — actions move cards; the real app will write to GA4/Meta.)</p>`;
 }
+// ---------- UTM ----------
 const LS_UTM="evid_utm_links";
 function normVal(v){if(!v)return"";if(v.includes("{{"))return v.trim();return v.trim().toLowerCase().replace(/\s+/g,"_").replace(/[^a-z0-9_\-{}.]/g,"")}
 function buildUrl(f){if(!f.url)return"";const p=[],add=(k,v)=>{if(v)p.push(`${k}=`+encodeURIComponent(v).replace(/%7B%7B/g,"{{").replace(/%7D%7D/g,"}}").replace(/%2E/g,"."))};add("utm_source",f.source);add("utm_medium",f.medium);add("utm_campaign",f.campaign);add("utm_id",f.id);add("utm_term",f.term);add("utm_content",f.content);const base=f.url.trim();return p.length?base+(base.includes("?")?"&":"?")+p.join("&"):base}
@@ -302,24 +357,35 @@ function renderUtm(){
 }
 function copy(t){navigator.clipboard?.writeText(t).then(()=>toast("Copied")).catch(()=>toast("Copy failed"))}
 let toastT;function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),1400)}
+// ---------- Settings (incl. Conversion goals definitions) ----------
 function renderSettings(){
-  document.getElementById("tab-settings").innerHTML=`<div class="head"><h1>Settings</h1><p>Connect accounts and manage your team. (Connections are demo on this preview; team saves to your browser.)</p></div>
+  document.getElementById("tab-settings").innerHTML=`<div class="head"><h1>Settings</h1><p>Connect accounts, define conversions, manage your team. (Saved to your browser on this preview.)</p></div>
     <div class="card"><div class="c-head"><h2>Connections</h2></div><div class="c-body">
       <div class="setrow"><div><b>Google Analytics (GA4)</b><div class="muted" style="font-size:12.5px">Reads site behavior · will read+write later</div></div><span class="ok">● Demo</span></div>
       <div class="setrow"><div><b>Meta Ads</b><div class="muted" style="font-size:12.5px">Reads spend & reach (read-only)</div></div><span class="ok">● Demo</span></div>
       <div class="setrow"><div><b>Google Tag Manager</b><div class="muted" style="font-size:12.5px">Needed to add new tracking</div></div><span class="muted">not set</span></div>
     </div></div>
+    <div class="card"><div class="c-head"><h2>Conversion goals</h2><span class="hint">you control what counts — each tracked independently</span></div><div class="c-body">
+      ${GOALS.map((g,i)=>`<div class="setrow"><div><b>${g.name}</b> &nbsp;${g.events.map(e=>`<span class="evtag">${e}</span>`).join(" ")||'<span class="muted" style="font-size:12px">no events</span>'}</div><button class="mini" data-delgoal="${i}" style="color:var(--bad)">Remove</button></div>`).join("")}
+      <div style="border-top:1px dashed var(--line);margin-top:10px;padding-top:15px">
+        <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:12px"><input id="ng-name" placeholder="New goal name (e.g. Purchase)" style="flex:1;min-width:200px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--ink)" /><button class="btn" id="ng-add">+ Add goal</button></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">${AVAILABLE_EVENTS.map(e=>`<label class="evpick"><input type="checkbox" value="${e}" /> ${e}</label>`).join("")}</div>
+        <p class="muted" style="font-size:12px;margin-top:10px">Tick the event(s) that count for the new goal, name it, add. Formulas (cost, rate) stay fixed — you only choose the events.</p>
+      </div>
+    </div></div>
     <div class="card"><div class="c-head"><h2>Team members</h2><span class="hint">assignable in Tasks</span></div><div class="c-body">
-      ${TEAM.map((p,i)=>`<div class="setrow"><div class="who"><span class="av">${p[0]}</span> ${p}</div><button class="mini" data-delteam="${i}" style="background:var(--panel-2);border:none;color:var(--bad);border-radius:8px;padding:6px 11px;cursor:pointer;font-weight:600">Remove</button></div>`).join("")}
+      ${TEAM.map((p,i)=>`<div class="setrow"><div class="who"><span class="av">${p[0]}</span> ${p}</div><button class="mini" data-delteam="${i}" style="color:var(--bad)">Remove</button></div>`).join("")}
       <div class="setrow"><input id="tm-name" placeholder="Add a teammate…" style="flex:1;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--ink)" /><button class="btn" id="tm-add">+ Invite</button></div>
     </div></div>`;
 }
+// ---------- wiring ----------
 function gotoTab(tab){document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="tab-"+tab));document.querySelector(".main").scrollTop=0}
 function renderAll(){renderDashboard();renderAnalyze();renderTasks();renderReviews();renderUtm();renderSettings()}
 document.getElementById("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)gotoTab(b.dataset.tab)});
 document.getElementById("range").addEventListener("change",e=>{state.range=e.target.value;renderDashboard();renderAnalyze()});
 document.getElementById("cmd").addEventListener("keydown",e=>{if(e.key==="Enter"){handleCommand(e.target.value);e.target.value=""}});
 document.getElementById("tab-analyze").addEventListener("click",e=>{const l=e.target.closest("[data-lens]");if(l){state.lens=l.dataset.lens;renderAnalyze()}});
+document.getElementById("tab-analyze").addEventListener("change",e=>{if(e.target.id==="goalsel"){state.goalIdx=+e.target.value;renderAnalyze()}});
 document.getElementById("tab-tasks").addEventListener("click",e=>{
   if(e.target.id==="nt-add"){const title=document.getElementById("nt-title").value.trim(),who=document.getElementById("nt-who").value;if(!title){toast("Type a task first");return}TASKS.unshift({id:nextId(),kind:who?"ppl":"sys",title:cap(title),why:"Added manually.",who:who||"System",state:"todo"});saveTasks();renderTasks();toast("Task added");return}
   const btn=e.target.closest("[data-act]");if(!btn)return;
@@ -330,7 +396,9 @@ document.getElementById("tab-tasks").addEventListener("click",e=>{
 document.getElementById("tab-tasks").addEventListener("change",e=>{const r=e.target.getAttribute("data-reassign");if(r){const t=TASKS.find(x=>x.id===+r);if(t){t.who=e.target.value;t.kind="ppl";saveTasks();toast("Reassigned to "+t.who)}}});
 document.getElementById("tab-settings").addEventListener("click",e=>{
   if(e.target.id==="tm-add"){const n=cap(document.getElementById("tm-name").value.trim());if(n&&!TEAM.includes(n)){TEAM.push(n);save("evid_team",TEAM);renderSettings();renderTasks();toast(n+" added")}return}
-  const d=e.target.getAttribute("data-delteam");if(d!==null){TEAM.splice(+d,1);save("evid_team",TEAM);renderSettings();renderTasks();toast("Removed")}
+  if(e.target.id==="ng-add"){const name=cap(document.getElementById("ng-name").value.trim());const evs=[...document.querySelectorAll("#tab-settings .evpick input:checked")].map(x=>x.value);if(!name){toast("Name the goal");return}if(!evs.length){toast("Pick at least one event");return}if(GOALS.some(g=>g.name.toLowerCase()===name.toLowerCase())){toast("Goal already exists");return}GOALS.push({name,events:evs});saveGoals();renderSettings();renderAnalyze();toast(name+" goal added");return}
+  const dt=e.target.getAttribute("data-delteam");if(dt!==null){TEAM.splice(+dt,1);save("evid_team",TEAM);renderSettings();renderTasks();toast("Removed");return}
+  const dg=e.target.getAttribute("data-delgoal");if(dg!==null){GOALS.splice(+dg,1);if(state.goalIdx>=GOALS.length)state.goalIdx=0;saveGoals();renderSettings();renderAnalyze();toast("Goal removed");return}
 });
 renderAll();
 </script>
